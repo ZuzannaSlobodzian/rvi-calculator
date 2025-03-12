@@ -1,0 +1,120 @@
+<graph id="Graph">
+  <version>1.0</version>
+  <node id="Read">
+    <operator>Read</operator>
+    <sources/>
+    <parameters class="com.bc.ceres.binding.dom.XppDomElement">
+      <useAdvancedOptions>false</useAdvancedOptions>
+      <file>INPUT_DIM_FILE</file>
+      <formatName>BEAM-DIMAP</formatName>
+      <copyMetadata>true</copyMetadata>
+      <bandNames/>
+      <pixelRegion>0,0,49518,21259</pixelRegion>
+      <maskNames/>
+    </parameters>
+  </node>
+  <node id="Subset">
+    <operator>Subset</operator>
+    <sources>
+      <sourceProduct refid="Read"/>
+    </sources>
+    <parameters class="com.bc.ceres.binding.dom.XppDomElement">
+      <sourceBands>Sigma0_VH,Sigma0_VV</sourceBands>
+      <tiePointGrids/>
+      <region>START_X,START_Y,WIDTH_X,HEIGHT_Y</region>
+      <referenceBand/>
+      <geoRegion/>
+      <subSamplingX>1</subSamplingX>
+      <subSamplingY>1</subSamplingY>
+      <fullSwath>false</fullSwath>
+      <copyMetadata>false</copyMetadata>
+    </parameters>
+  </node>
+  <node id="BandSelect">
+    <operator>BandSelect</operator>
+    <sources>
+      <sourceProduct refid="Subset"/>
+    </sources>
+    <parameters class="com.bc.ceres.binding.dom.XppDomElement">
+      <selectedPolarisations>VV</selectedPolarisations>
+      <sourceBands/>
+      <bandNamePattern/>
+    </parameters>
+  </node>
+  <node id="LinearToFromdB">
+    <operator>LinearToFromdB</operator>
+    <sources>
+      <sourceProduct refid="BandSelect"/>
+    </sources>
+    <parameters class="com.bc.ceres.binding.dom.XppDomElement">
+      <sourceBands/>
+    </parameters>
+  </node>
+  <node id="BandSelect(2)">
+    <operator>BandSelect</operator>
+    <sources>
+      <sourceProduct refid="Subset"/>
+    </sources>
+    <parameters class="com.bc.ceres.binding.dom.XppDomElement">
+      <selectedPolarisations>VH</selectedPolarisations>
+      <sourceBands/>
+      <bandNamePattern/>
+    </parameters>
+  </node>
+  <node id="LinearToFromdB(2)">
+    <operator>LinearToFromdB</operator>
+    <sources>
+      <sourceProduct refid="BandSelect(2)"/>
+    </sources>
+    <parameters class="com.bc.ceres.binding.dom.XppDomElement">
+      <sourceBands/>
+    </parameters>
+  </node>
+  <node id="Write(2)">
+    <operator>Write</operator>
+    <sources>
+      <sourceProduct refid="LinearToFromdB(2)"/>
+    </sources>
+    <parameters class="com.bc.ceres.binding.dom.XppDomElement">
+      <file>OUTPUT_VH_FILE</file>
+      <formatName>GeoTIFF</formatName>
+    </parameters>
+  </node>
+  <node id="Write">
+    <operator>Write</operator>
+    <sources>
+      <sourceProduct refid="LinearToFromdB"/>
+    </sources>
+    <parameters class="com.bc.ceres.binding.dom.XppDomElement">
+      <file>OUTPUT_VV_FILE</file>
+      <formatName>GeoTIFF</formatName>
+    </parameters>
+  </node>
+  <applicationData id="Presentation">
+    <Description/>
+    <node id="Read">
+            <displayPosition x="15.0" y="113.0"/>
+    </node>
+    <node id="Subset">
+      <displayPosition x="129.0" y="116.0"/>
+    </node>
+    <node id="BandSelect">
+      <displayPosition x="227.0" y="65.0"/>
+    </node>
+    <node id="LinearToFromdB">
+      <displayPosition x="354.0" y="29.0"/>
+    </node>
+    <node id="BandSelect(2)">
+      <displayPosition x="230.0" y="175.0"/>
+    </node>
+    <node id="LinearToFromdB(2)">
+      <displayPosition x="388.0" y="184.0"/>
+    </node>
+    <node id="Write(2)">
+      <displayPosition x="570.0" y="189.0"/>
+    </node>
+    <node id="Write">
+            <displayPosition x="535.0" y="21.0"/>
+    </node>
+  </applicationData>
+</graph>
